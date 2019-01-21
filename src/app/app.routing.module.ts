@@ -5,12 +5,18 @@ import {PhotoFormComponent} from './photos/photo-form/photo-form.component';
 import {PhotoListComponent} from './photos/photo-list/photo-list.component';
 import {NotFoundComponent} from './errors/not-found/not-found.component';
 import {PhotoListResolver} from './photos/photo-list/photo-list.resolver';
-import {SigninComponent} from './home/signin/signin.component';
+import {AuthGuard} from './core/auth/auth.guard';
+import {PhotoDetailsComponent} from './photos/photo-details/photo-details.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SigninComponent
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomeModule'
   },
   {
     path: 'user/:userName',
@@ -21,7 +27,12 @@ const routes: Routes = [
   },
   {
     path: 'p/add',
-    component: PhotoFormComponent
+    component: PhotoFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'p/:photoId',
+    component: PhotoDetailsComponent
   },
   {
     path: '**',
